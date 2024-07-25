@@ -1,6 +1,6 @@
-import { DynamicIdParams } from "../types";
-import { getEntityProperties } from "../utils/getEntityProperties";
-import insertEntity from "../utils/insertEntity";
+import { DynamicIdParams } from "@/types";
+import { getEntityProperties } from "@/utils/getEntityProperties";
+import insertEntity from "@/utils/insertEntity";
 
 export async function POST(request: Request, { params }: DynamicIdParams) {
   const entityProperties = getEntityProperties(params.entity);

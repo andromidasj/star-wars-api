@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { DynamicIdParams } from "../../types";
-import { getEntityProperties } from "../../utils/getEntityProperties";
+import { DynamicIdParams } from "@/types";
+import { getEntityProperties } from "@/utils/getEntityProperties";
 
 export async function GET(_request: Request, { params }: DynamicIdParams) {
   const entityProperties = getEntityProperties(params.entity);
