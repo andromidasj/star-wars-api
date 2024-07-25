@@ -8,6 +8,13 @@
       "when": 1721926781372,
       "tag": "0000_striped_starhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1721936377641,
+      "tag": "0001_sticky_guardsmen",
+      "breakpoints": true
     }
   ]
 }

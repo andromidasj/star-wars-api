@@ -6,6 +6,7 @@ import {
   serial,
   text,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 /**
  * =============================================================================
@@ -14,14 +15,14 @@ import {
  */
 export const planets = pgTable("planets", {
   id: serial("id").primaryKey(),
-  name: text("name"),
-  climate: text("climate"),
-  population: integer("population"),
+  name: text("name").notNull(),
+  climate: text("climate").notNull(),
+  population: integer("population").notNull(),
 });
 
 export const characters = pgTable("characters", {
   id: serial("id").primaryKey(),
-  name: text("name"),
+  name: text("name").notNull(),
   homePlanetId: integer("home_planet_id")
     .notNull()
     .references(() => planets.id),
@@ -29,9 +30,9 @@ export const characters = pgTable("characters", {
 
 export const ships = pgTable("ships", {
   id: serial("id").primaryKey(),
-  name: text("name"),
-  model: text("model"),
-  costInCredits: integer("cost_in_credits"),
+  name: text("name").notNull(),
+  model: text("model").notNull(),
+  costInCredits: integer("cost_in_credits").notNull(),
 });
 
 export const charactersToShips = pgTable(
@@ -79,3 +80,12 @@ export const charactersToShipsRelations = relations(
     }),
   })
 );
+
+/**
+ * =============================================================================
+ *                                VALIDATION
+ * =============================================================================
+ */
+export const insertCharacterSchema = createInsertSchema(characters);
+export const insertPlanetSchema = createInsertSchema(planets);
+export const insertShipSchema = createInsertSchema(ships);
