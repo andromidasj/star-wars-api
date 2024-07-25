@@ -3,11 +3,19 @@ import { Client } from "pg";
 import * as schema from "./schema";
 
 const client = new Client({
-  host: "localhost",
-  port: 5432,
-  database: "postgres",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
 });
 
-await client.connect();
+try {
+  await client.connect();
+} catch (error) {
+  throw new Error(
+    "Error connecting to database. Did you set the correct environment variables in .env?"
+  );
+}
 
 export const db = drizzle(client, { schema });
