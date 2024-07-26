@@ -1,11 +1,11 @@
 {
-  "id": "6f4cb2f3-ed17-4293-a062-7302355e290b",
+  "id": "38bbf803-4b7f-4c88-8fff-de021fe9b9a0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.characters": {
-      "name": "characters",
+    "public.entity_overrides": {
+      "name": "entity_overrides",
       "schema": "",
       "columns": {
         "id": {
@@ -14,129 +14,38 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "home_planet_id": {
-          "name": "home_planet_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "characters_home_planet_id_planets_id_fk": {
-          "name": "characters_home_planet_id_planets_id_fk",
-          "tableFrom": "characters",
-          "tableTo": "planets",
-          "columnsFrom": [
-            "home_planet_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.characters_to_ships": {
-      "name": "characters_to_ships",
-      "schema": "",
-      "columns": {
-        "character_id": {
-          "name": "character_id",
-          "type": "integer",
+        "entity_type": {
+          "name": "entity_type",
+          "type": "entity_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
-        "ship_id": {
-          "name": "ship_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "characters_to_ships_character_id_ship_id_pk": {
-          "name": "characters_to_ships_character_id_ship_id_pk",
-          "columns": [
-            "character_id",
-            "ship_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "public.planets": {
-      "name": "planets",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
+        "entity_id": {
+          "name": "entity_id",
           "type": "serial",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "text",
+        "custom_data": {
+          "name": "custom_data",
+          "type": "jsonb",
           "primaryKey": false,
-          "notNull": false
-        },
-        "climate": {
-          "name": "climate",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "population": {
-          "name": "population",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.ships": {
-      "name": "ships",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "text",
+        "created": {
+          "name": "created",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         },
-        "model": {
-          "name": "model",
-          "type": "text",
+        "edited": {
+          "name": "edited",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
-        },
-        "cost_in_credits": {
-          "name": "cost_in_credits",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -145,7 +54,20 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.entity_type": {
+      "name": "entity_type",
+      "schema": "public",
+      "values": [
+        "people",
+        "planets",
+        "starships",
+        "vehicles",
+        "films",
+        "species"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {

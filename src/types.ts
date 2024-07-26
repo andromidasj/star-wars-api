@@ -120,7 +120,7 @@ const vehicleSchema = z.object({
 });
 
 // Schema for list responses
-const listResponseSchema = <T extends z.ZodTypeAny>(entitySchema: T) =>
+export const listResponseSchema = <T extends z.ZodTypeAny>(entitySchema: T) =>
   z.object({
     count: z.number(),
     next: z.string().url().nullable(),
@@ -142,4 +142,5 @@ export const SwapiSchemas = {
   SpeciesList: listResponseSchema(speciesSchema),
   Vehicle: vehicleSchema,
   VehicleList: listResponseSchema(vehicleSchema),
+  ANY_LIST: listResponseSchema(z.object(commonFields)),
 };

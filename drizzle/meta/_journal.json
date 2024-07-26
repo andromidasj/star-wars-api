@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721926781372,
-      "tag": "0000_striped_starhawk",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721936377641,
-      "tag": "0001_sticky_guardsmen",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721952913765,
-      "tag": "0002_redundant_mandarin",
+      "when": 1722027482761,
+      "tag": "0000_amazing_sandman",
       "breakpoints": true
     }
   ]
