@@ -1,0 +1,381 @@
+openapi: 3.0.1
+info:
+  title: API Documentation
+  description: Built for Russ Nelson & friends!
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /characters:
+    get:
+      summary: Get all characters
+      responses:
+        "200":
+          description: A list of characters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Character"
+              example:
+                count: 1
+                results:
+                  - id: 1
+                    name: "Luke Skywalker"
+                    homePlanetId: 1
+    post:
+      summary: Create a new character
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CharacterCreate"
+      responses:
+        "201":
+          description: The created character
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+  /characters/{id}:
+    get:
+      summary: Get a character by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A single character
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a character by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CharacterUpdate"
+      responses:
+        "200":
+          description: The updated character
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /ships:
+    get:
+      summary: Get all ships
+      responses:
+        "200":
+          description: A list of ships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ship"
+              example:
+                count: 1
+                results:
+                  - id: 1
+                    name: "Millennium Falcon"
+                    model: "YT-1300 light freighter"
+                    costInCredits: 100000
+    post:
+      summary: Create a new ship
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipCreate"
+      responses:
+        "201":
+          description: The created ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+  /ships/{id}:
+    get:
+      summary: Get a ship by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A single ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a ship by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipUpdate"
+      responses:
+        "200":
+          description: The updated ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /planets:
+    get:
+      summary: Get all planets
+      responses:
+        "200":
+          description: A list of planets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 1
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Planet"
+              example:
+                count: 1
+                results:
+                  - id: 1
+                    name: "Tatooine"
+                    climate: "Arid"
+                    population: 200000
+    post:
+      summary: Create a new planet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlanetCreate"
+      responses:
+        "201":
+          description: The created planet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Planet"
+  /planets/{id}:
+    get:
+      summary: Get a planet by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A single planet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Planet"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a planet by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlanetUpdate"
+      responses:
+        "200":
+          description: The updated planet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Planet"
+        "400":
+          $ref: "#/components/responses/InvalidID"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  schemas:
+    Character:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        homePlanetId:
+          type: integer
+    CharacterCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        homePlanetId:
+          type: integer
+    CharacterUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        homePlanetId:
+          type: integer
+    Ship:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        model:
+          type: string
+        costInCredits:
+          type: integer
+    ShipCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        model:
+          type: string
+        costInCredits:
+          type: integer
+    ShipUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        model:
+          type: string
+        costInCredits:
+          type: integer
+    Planet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        climate:
+          type: string
+        population:
+          type: integer
+    PlanetCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        climate:
+          type: string
+        population:
+          type: integer
+    PlanetUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        climate:
+          type: string
+        population:
+          type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+  responses:
+    InvalidID:
+      description: Invalid ID provided
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              message: "Invalid ID: `a`. Please provide a valid Ship ID, which should be a number."
+    NotFound:
+      description: Entity not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              message: "Ship with ID 3 not found."
+    InvalidPath:
+      description: Invalid path
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              message: "Invalid path"

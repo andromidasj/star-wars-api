@@ -1,14 +1,9 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
+import { dbCredentials } from "./dbCredentials";
 import * as schema from "./schema";
 
-const client = new Client({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-});
+const client = new Client(dbCredentials);
 
 try {
   await client.connect();
@@ -18,4 +13,4 @@ try {
   );
 }
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(client, { schema, logger: true });

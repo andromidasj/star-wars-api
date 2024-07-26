@@ -32,11 +32,17 @@ export async function queryEntitiesById<T extends PgTableWithColumns<any>>(
   let result;
 
   try {
-    result = await db
-      .select()
-      .from(table)
-      .where(eq(idColumn, parsedId))
-      .limit(1);
+    result = await db.query.characters.findFirst({
+      where: eq(idColumn, parsedId),
+      with: {
+        homePlanet: true,
+        ships: true,
+      },
+      columns: {
+        id: true,
+        name: true,
+      },
+    });
   } catch (error) {
     return Response.json(
       { error: { message: "Error querying database." } },
@@ -45,7 +51,7 @@ export async function queryEntitiesById<T extends PgTableWithColumns<any>>(
   }
 
   // Handle the case where no entity is found
-  if (result.length === 0) {
+  if (!result) {
     return Response.json(
       { error: { message: `${entityName} with ID ${rawId} not found.` } },
       { status: 404 }
@@ -53,5 +59,5 @@ export async function queryEntitiesById<T extends PgTableWithColumns<any>>(
   }
 
   // Return the successful result
-  return Response.json(result[0]);
+  return Response.json(result);
 }

@@ -39,8 +39,12 @@ export const charactersToShips = pgTable(
   // Many to many relationship table
   "characters_to_ships",
   {
-    characterId: integer("character_id").notNull(), // .references(() => characters.id),
-    shipId: integer("ship_id").notNull(), // .references(() => ships.id),
+    characterId: integer("character_id")
+      .notNull()
+      .references(() => characters.id),
+    shipId: integer("ship_id")
+      .notNull()
+      .references(() => ships.id),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.characterId, t.shipId] }),
@@ -56,11 +60,12 @@ export const planetsRelations = relations(planets, ({ many }) => ({
   characters: many(characters),
 }));
 
-export const charactersRelations = relations(characters, ({ one }) => ({
+export const charactersRelations = relations(characters, ({ one, many }) => ({
   homePlanet: one(planets, {
     fields: [characters.homePlanetId],
     references: [planets.id],
   }),
+  ships: many(charactersToShips),
 }));
 
 export const shipsRelations = relations(ships, ({ many }) => ({
