@@ -13,4 +13,4 @@ try {
   );
 }
 
-export const db = drizzle(client, { schema, logger: true });
+export const db = drizzle(client, { schema });

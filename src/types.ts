@@ -152,4 +152,4 @@ export const SingleEntitySchemas = [
   filmSchema,
   speciesSchema,
   vehicleSchema,
-];
+] as const;

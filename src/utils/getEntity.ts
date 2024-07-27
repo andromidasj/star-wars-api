@@ -17,12 +17,12 @@ export async function getEntity<
 }) {
   try {
     // Get the entity from the SWAPI API
-    const swapiResponse = await swapiGetFn(entityId);
+    const swapiResponsePromise = swapiGetFn(entityId);
 
     // Here I'm using DrizzleORM's select method, which you can see is modeled after SQL.
     // You can see the select method in the `updateEntity` function in `src/utils/updateEntity.ts`.
     // This just showcases the different ways to query the database using Drizzle ORM.
-    const localResults = await db
+    const localResultsPromise = db
       .select()
       .from(editedEntities)
       .where(
@@ -33,16 +33,14 @@ export async function getEntity<
       )
       .limit(1);
 
+    const promiseArray = [swapiResponsePromise, localResultsPromise] as const;
+
+    const [swapiResponse, localResults] = await Promise.all(promiseArray);
+
     const localEntity = localResults[0];
+
     if (!localEntity) {
-      return Response.json(
-        {
-          error: {
-            message: `Couldn't find any ${entityType} with ID ${entityId}`,
-          },
-        },
-        { status: 404 }
-      );
+      return Response.json(swapiResponse);
     }
 
     const mergedData = {
