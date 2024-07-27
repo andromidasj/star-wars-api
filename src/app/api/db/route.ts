@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { addedEntities, deletedEntities, editedEntities } from "@/db/schema";
+import { deletedEntities, editedEntities } from "@/db/schema";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -12,14 +12,12 @@ export async function GET(request: NextRequest) {
         return Response.json(await db.select().from(editedEntities));
       case "deleted":
         return Response.json(await db.select().from(deletedEntities));
-      case "added":
-        return Response.json(await db.select().from(addedEntities));
       default:
         return Response.json(
           {
             error: {
               message:
-                "Invalid type. Please specify either `edited`, `deleted`, or `added`.",
+                "Invalid type. Please specify either `edited` or `deleted`.",
             },
           },
           { status: 400 }

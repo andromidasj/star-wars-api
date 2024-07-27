@@ -16,8 +16,8 @@ export async function upsertEntity<
   entityType,
   entityData,
 }: {
-  swapiGetFn: (entityId: number) => Promise<T>;
-  entityId: number;
+  swapiGetFn: (entityId?: number) => Promise<T>;
+  entityId?: number;
   entityType: EntityType;
   entityData: Partial<T>;
 }) {
@@ -32,7 +32,7 @@ export async function upsertEntity<
     const insertionPromise = db
       .insert(editedEntities)
       .values({
-        entityId,
+        entityId: entityId ?? null, // If entityId is null, it's a new entity, so we don't need to update the entityId
         entityType,
         updatedData: entityData,
       })

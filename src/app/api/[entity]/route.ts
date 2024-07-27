@@ -67,9 +67,8 @@ export async function POST(request: Request, { params }: DynamicIdParams) {
   }
 
   return upsertEntity({
-    swapiGetFn: entityMap[parsedEntity.data] as (id: number) => Promise<any>,
+    swapiGetFn: entityMap[parsedEntity.data] as () => Promise<any>,
     entityType: parsedEntity.data,
-    entityId: +params.id,
     entityData,
   });
 }
