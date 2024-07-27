@@ -10,7 +10,7 @@ import {
 import { createInsertSchema } from "drizzle-zod";
 
 // Starships table
-export const starships = pgTable("starships", {
+const starships = pgTable("starships", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   model: text("model").notNull(),
@@ -31,7 +31,7 @@ export const starships = pgTable("starships", {
 });
 
 // People table
-export const people = pgTable("people", {
+const people = pgTable("people", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   height: text("height"),
@@ -48,7 +48,7 @@ export const people = pgTable("people", {
 });
 
 // Planets table
-export const planets = pgTable("planets", {
+const planets = pgTable("planets", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   rotationPeriod: text("rotation_period"),
@@ -65,7 +65,7 @@ export const planets = pgTable("planets", {
 });
 
 // Films table
-export const films = pgTable("films", {
+const films = pgTable("films", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   episodeId: integer("episode_id").notNull(),
@@ -79,7 +79,7 @@ export const films = pgTable("films", {
 });
 
 // Species table
-export const species = pgTable("species", {
+const species = pgTable("species", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   classification: text("classification"),
@@ -97,7 +97,7 @@ export const species = pgTable("species", {
 });
 
 // Vehicles table
-export const vehicles = pgTable("vehicles", {
+const vehicles = pgTable("vehicles", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   model: text("model").notNull(),
@@ -118,7 +118,7 @@ export const vehicles = pgTable("vehicles", {
 // Many-to-many relationships
 
 // Films <-> People
-export const filmsToCharacters = pgTable("films_to_characters", {
+const filmsToCharacters = pgTable("films_to_characters", {
   filmId: integer("film_id")
     .notNull()
     .references(() => films.id),
@@ -128,7 +128,7 @@ export const filmsToCharacters = pgTable("films_to_characters", {
 });
 
 // Films <-> Planets
-export const filmsToPlanets = pgTable("films_to_planets", {
+const filmsToPlanets = pgTable("films_to_planets", {
   filmId: integer("film_id")
     .notNull()
     .references(() => films.id),
@@ -138,7 +138,7 @@ export const filmsToPlanets = pgTable("films_to_planets", {
 });
 
 // Films <-> Starships
-export const filmsToStarships = pgTable("films_to_starships", {
+const filmsToStarships = pgTable("films_to_starships", {
   filmId: integer("film_id")
     .notNull()
     .references(() => films.id),
@@ -148,7 +148,7 @@ export const filmsToStarships = pgTable("films_to_starships", {
 });
 
 // Films <-> Vehicles
-export const filmsToVehicles = pgTable("films_to_vehicles", {
+const filmsToVehicles = pgTable("films_to_vehicles", {
   filmId: integer("film_id")
     .notNull()
     .references(() => films.id),
@@ -158,7 +158,7 @@ export const filmsToVehicles = pgTable("films_to_vehicles", {
 });
 
 // Films <-> Species
-export const filmsToSpecies = pgTable("films_to_species", {
+const filmsToSpecies = pgTable("films_to_species", {
   filmId: integer("film_id")
     .notNull()
     .references(() => films.id),
@@ -168,7 +168,7 @@ export const filmsToSpecies = pgTable("films_to_species", {
 });
 
 // People <-> Species
-export const peopleToSpecies = pgTable("people_to_species", {
+const peopleToSpecies = pgTable("people_to_species", {
   personId: integer("person_id")
     .notNull()
     .references(() => people.id),
@@ -178,7 +178,7 @@ export const peopleToSpecies = pgTable("people_to_species", {
 });
 
 // People <-> Vehicles
-export const peopleToVehicles = pgTable("people_to_vehicles", {
+const peopleToVehicles = pgTable("people_to_vehicles", {
   personId: integer("person_id")
     .notNull()
     .references(() => people.id),
@@ -188,7 +188,7 @@ export const peopleToVehicles = pgTable("people_to_vehicles", {
 });
 
 // People <-> Starships
-export const peopleToStarships = pgTable("people_to_starships", {
+const peopleToStarships = pgTable("people_to_starships", {
   personId: integer("person_id")
     .notNull()
     .references(() => people.id),
@@ -198,12 +198,12 @@ export const peopleToStarships = pgTable("people_to_starships", {
 });
 
 // Relations
-export const starshipsRelations = relations(starships, ({ many }) => ({
+const starshipsRelations = relations(starships, ({ many }) => ({
   pilots: many(peopleToStarships),
   films: many(filmsToStarships),
 }));
 
-export const peopleRelations = relations(people, ({ one, many }) => ({
+const peopleRelations = relations(people, ({ one, many }) => ({
   homeworld: one(planets, {
     fields: [people.homeworldId],
     references: [planets.id],
@@ -214,12 +214,12 @@ export const peopleRelations = relations(people, ({ one, many }) => ({
   starships: many(peopleToStarships),
 }));
 
-export const planetsRelations = relations(planets, ({ many }) => ({
+const planetsRelations = relations(planets, ({ many }) => ({
   residents: many(people),
   films: many(filmsToPlanets),
 }));
 
-export const filmsRelations = relations(films, ({ many }) => ({
+const filmsRelations = relations(films, ({ many }) => ({
   characters: many(filmsToCharacters),
   planets: many(filmsToPlanets),
   starships: many(filmsToStarships),
@@ -227,7 +227,7 @@ export const filmsRelations = relations(films, ({ many }) => ({
   species: many(filmsToSpecies),
 }));
 
-export const speciesRelations = relations(species, ({ one, many }) => ({
+const speciesRelations = relations(species, ({ one, many }) => ({
   homeworld: one(planets, {
     fields: [species.homeworldId],
     references: [planets.id],
@@ -236,7 +236,7 @@ export const speciesRelations = relations(species, ({ one, many }) => ({
   films: many(filmsToSpecies),
 }));
 
-export const vehiclesRelations = relations(vehicles, ({ many }) => ({
+const vehiclesRelations = relations(vehicles, ({ many }) => ({
   pilots: many(peopleToVehicles),
   films: many(filmsToVehicles),
 }));
@@ -246,9 +246,9 @@ export const vehiclesRelations = relations(vehicles, ({ many }) => ({
  *                                VALIDATION
  * =============================================================================
  */
-export const insertPeopleSchema = createInsertSchema(people);
-export const insertPlanetSchema = createInsertSchema(planets);
-export const insertStarshipsSchema = createInsertSchema(starships);
-export const insertVehiclesSchema = createInsertSchema(vehicles);
-export const insertFilmsSchema = createInsertSchema(films);
-export const insertSpeciesSchema = createInsertSchema(species);
+const insertPeopleSchema = createInsertSchema(people);
+const insertPlanetSchema = createInsertSchema(planets);
+const insertStarshipsSchema = createInsertSchema(starships);
+const insertVehiclesSchema = createInsertSchema(vehicles);
+const insertFilmsSchema = createInsertSchema(films);
+const insertSpeciesSchema = createInsertSchema(species);

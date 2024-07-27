@@ -8,6 +8,27 @@
       "when": 1722027482761,
       "tag": "0000_amazing_sandman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1722030079328,
+      "tag": "0001_legal_whiplash",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722030226342,
+      "tag": "0002_foamy_patriot",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1722042921862,
+      "tag": "0003_flawless_miss_america",
+      "breakpoints": true
     }
   ]
 }

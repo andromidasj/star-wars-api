@@ -144,3 +144,12 @@ export const SwapiSchemas = {
   VehicleList: listResponseSchema(vehicleSchema),
   ANY_LIST: listResponseSchema(z.object(commonFields)),
 };
+
+export const SingleEntitySchemas = [
+  starshipSchema,
+  peopleSchema,
+  planetSchema,
+  filmSchema,
+  speciesSchema,
+  vehicleSchema,
+];
