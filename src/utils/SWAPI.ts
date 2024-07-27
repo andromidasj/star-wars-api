@@ -6,6 +6,11 @@ import { SwapiSchemas } from "@/types";
  * grab the data from the API (and parse it using Zod for type safety).
  */
 export class SWAPI {
+  static async getOptions() {
+    const response = await fetch("https://swapi.dev/api");
+    return await response.json();
+  }
+
   static async getPeople() {
     const response = await fetch("https://swapi.dev/api/people");
     const data = await response.json();
