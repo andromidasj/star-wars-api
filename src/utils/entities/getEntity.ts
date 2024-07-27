@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { editedEntities, entityTypesArr } from "@/db/schema";
-import { SingleEntitySchemas } from "@/types";
+import { editedEntities } from "@/db/schema";
+import { EntityType, SingleEntitySchemas } from "@/types";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -11,9 +11,9 @@ export async function getEntity<
   entityType,
   entityId,
 }: {
-  swapiGetFn: (entityId: string) => Promise<T>;
-  entityType: (typeof entityTypesArr)[number];
-  entityId: string;
+  swapiGetFn: (entityId: number) => Promise<T>;
+  entityType: EntityType;
+  entityId: number;
 }) {
   try {
     // Get the entity from the SWAPI API
@@ -39,10 +39,12 @@ export async function getEntity<
 
     const localEntity = localResults[0];
 
+    // If the entity is not found in the database, return the data from the SWAPI API.
     if (!localEntity) {
       return Response.json(swapiResponse);
     }
 
+    // Otherwise, merge the data from the database with the data from the SWAPI API and return that.
     const mergedData = {
       ...swapiResponse,
       ...(localResults[0]?.updatedData as Object),

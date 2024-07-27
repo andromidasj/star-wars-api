@@ -1,3 +1,4 @@
+import { entityTypesArr } from "@/types";
 import {
   integer,
   jsonb,
@@ -6,15 +7,6 @@ import {
   serial,
   timestamp,
 } from "drizzle-orm/pg-core";
-
-export const entityTypesArr = [
-  "people",
-  "planets",
-  "starships",
-  "vehicles",
-  "films",
-  "species",
-] as const;
 
 export const entitiesEnum = pgEnum("entity_type", entityTypesArr);
 

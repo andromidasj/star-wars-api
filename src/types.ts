@@ -153,3 +153,14 @@ export const SingleEntitySchemas = [
   speciesSchema,
   vehicleSchema,
 ] as const;
+
+export const entityTypesArr = [
+  "people",
+  "planets",
+  "starships",
+  "vehicles",
+  "films",
+  "species",
+] as const;
+export const EntityTypeEnumSchema = z.enum(entityTypesArr);
+export type EntityType = (typeof entityTypesArr)[number];

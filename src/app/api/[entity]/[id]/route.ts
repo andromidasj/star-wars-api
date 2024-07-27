@@ -1,62 +1,36 @@
-import { getEntity } from "@/utils/getEntity";
+import { DynamicIdParams, EntityTypeEnumSchema } from "@/types";
+import { getEntity } from "@/utils/entities/getEntity";
+import { upsertEntity } from "@/utils/entities/upsertEntity";
 import { SWAPI } from "@/utils/SWAPI";
-import { updateEntity } from "@/utils/updateEntity";
-import { DynamicIdParams } from "../../../../types";
 
 export async function GET(_request: Request, { params }: DynamicIdParams) {
-  switch (params.entity) {
-    case "people": {
-      return getEntity({
-        swapiGetFn: SWAPI.getPersonById,
-        entityType: "people",
-        entityId: params.id,
-      });
-    }
-    case "planets": {
-      return getEntity({
-        swapiGetFn: SWAPI.getPlanetById,
-        entityType: "planets",
-        entityId: params.id,
-      });
-    }
-    case "starships": {
-      return getEntity({
-        swapiGetFn: SWAPI.getStarshipById,
-        entityType: "starships",
-        entityId: params.id,
-      });
-    }
-    case "vehicles": {
-      return getEntity({
-        swapiGetFn: SWAPI.getVehicleById,
-        entityType: "vehicles",
-        entityId: params.id,
-      });
-    }
-    case "films": {
-      return getEntity({
-        swapiGetFn: SWAPI.getFilmById,
-        entityType: "films",
-        entityId: params.id,
-      });
-    }
-    case "species": {
-      return getEntity({
-        swapiGetFn: SWAPI.getSpeciesById,
-        entityType: "species",
-        entityId: params.id,
-      });
-    }
-    default: {
-      return Response.json(
-        { error: { message: "Invalid path" } },
-        { status: 400 }
-      );
-    }
+  // Create a map of entity type to the function that fetches the entity from the SWAPI API.
+  const entityMap = {
+    people: SWAPI.getPersonById,
+    planets: SWAPI.getPlanetById,
+    starships: SWAPI.getStarshipById,
+    vehicles: SWAPI.getVehicleById,
+    films: SWAPI.getFilmById,
+    species: SWAPI.getSpeciesById,
+  } as const;
+
+  const parsedEntity = EntityTypeEnumSchema.safeParse(params.entity);
+  if (!parsedEntity.success) {
+    return Response.json(
+      { error: { message: "Invalid path" } },
+      { status: 400 }
+    );
   }
+
+  return getEntity({
+    swapiGetFn: entityMap[parsedEntity.data] as (id: number) => Promise<any>,
+    entityType: parsedEntity.data,
+    entityId: +params.id,
+  });
 }
 
 export async function PUT(request: Request, { params }: DynamicIdParams) {
+  // Parse the request body as JSON.
   let entityData;
   try {
     entityData = await request.json();
@@ -66,60 +40,28 @@ export async function PUT(request: Request, { params }: DynamicIdParams) {
       { status: 400 }
     );
   }
-  switch (params.entity) {
-    case "people": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getPersonById,
-        entityType: "people",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    case "planets": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getPlanetById,
-        entityType: "planets",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    case "starships": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getStarshipById,
-        entityType: "starships",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    case "vehicles": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getVehicleById,
-        entityType: "vehicles",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    case "films": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getFilmById,
-        entityType: "films",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    case "species": {
-      return updateEntity({
-        swapiGetFn: SWAPI.getSpeciesById,
-        entityType: "species",
-        entityId: params.id,
-        entityData,
-      });
-    }
-    default: {
-      return Response.json(
-        { error: { message: "Invalid path" } },
-        { status: 400 }
-      );
-    }
+
+  const entityMap = {
+    people: SWAPI.getPersonById,
+    planets: SWAPI.getPlanetById,
+    starships: SWAPI.getStarshipById,
+    vehicles: SWAPI.getVehicleById,
+    films: SWAPI.getFilmById,
+    species: SWAPI.getSpeciesById,
+  };
+
+  const parsedEntity = EntityTypeEnumSchema.safeParse(params.entity);
+  if (!parsedEntity.success) {
+    return Response.json(
+      { error: { message: "Invalid path" } },
+      { status: 400 }
+    );
   }
+
+  return upsertEntity({
+    swapiGetFn: entityMap[parsedEntity.data] as (id: number) => Promise<any>,
+    entityType: parsedEntity.data,
+    entityId: +params.id,
+    entityData,
+  });
 }

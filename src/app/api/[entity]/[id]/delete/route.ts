@@ -1,59 +1,32 @@
-import { DynamicIdParams } from "@/types";
-import { insertDeletedEntity } from "@/utils/insertDeletedEntity";
+import { DynamicIdParams, EntityTypeEnumSchema } from "@/types";
+import { insertDeletedEntity } from "@/utils/entities/insertDeletedEntity";
 import { SWAPI } from "@/utils/SWAPI";
 
 // I'm using a separate `/delete` endpoint to protect against accidental deletions.
 // This way, it needs to be explicitly set in both the URL and the HTTP method.
 
 export async function DELETE(_request: Request, { params }: DynamicIdParams) {
-  switch (params.entity) {
-    case "people": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getPeople,
-        entityType: "people",
-        entityId: params.id,
-      });
-    }
-    case "planets": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getPlanets,
-        entityType: "planets",
-        entityId: params.id,
-      });
-    }
-    case "starships": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getStarships,
-        entityType: "starships",
-        entityId: params.id,
-      });
-    }
-    case "vehicles": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getVehicles,
-        entityType: "vehicles",
-        entityId: params.id,
-      });
-    }
-    case "films": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getFilms,
-        entityType: "films",
-        entityId: params.id,
-      });
-    }
-    case "species": {
-      return insertDeletedEntity({
-        swapiGetFn: SWAPI.getSpecies,
-        entityType: "species",
-        entityId: params.id,
-      });
-    }
-    default: {
-      return Response.json(
-        { error: { message: "Invalid path" } },
-        { status: 400 }
-      );
-    }
+  // Create a map of entity type to the function that fetches the entity from the SWAPI API.
+  const entityMap = {
+    people: SWAPI.getPeople,
+    planets: SWAPI.getPlanets,
+    starships: SWAPI.getStarships,
+    vehicles: SWAPI.getVehicles,
+    films: SWAPI.getFilms,
+    species: SWAPI.getSpecies,
+  } as const;
+
+  const parsedEntity = EntityTypeEnumSchema.safeParse(params.entity);
+  if (!parsedEntity.success) {
+    return Response.json(
+      { error: { message: "Invalid path" } },
+      { status: 400 }
+    );
   }
+
+  return insertDeletedEntity({
+    swapiGetFn: entityMap[parsedEntity.data] as () => Promise<any>,
+    entityType: parsedEntity.data,
+    entityId: +params.id,
+  });
 }

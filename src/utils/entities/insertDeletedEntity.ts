@@ -1,8 +1,8 @@
 import { db } from "@/db";
-import { deletedEntities, entityTypesArr } from "@/db/schema";
-import { SwapiSchemas } from "@/types";
+import { deletedEntities } from "@/db/schema";
+import { EntityType, SwapiSchemas } from "@/types";
 import { z } from "zod";
-import { entityUrlToId } from "./entityUrlToId";
+import { entityUrlToId } from "../entityUrlToId";
 
 export async function insertDeletedEntity<
   T extends z.infer<typeof SwapiSchemas.ANY_LIST>
@@ -12,8 +12,8 @@ export async function insertDeletedEntity<
   entityId,
 }: {
   swapiGetFn: () => Promise<T>;
-  entityType: (typeof entityTypesArr)[number];
-  entityId: string;
+  entityType: EntityType;
+  entityId: number;
 }) {
   const numberId = Number(entityId);
   if (isNaN(numberId)) {

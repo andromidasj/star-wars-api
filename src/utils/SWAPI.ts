@@ -12,7 +12,7 @@ export class SWAPI {
     return SwapiSchemas.PeopleList.parse(data);
   }
 
-  static async getPersonById(id: string) {
+  static async getPersonById(id: number) {
     const response = await fetch(`https://swapi.dev/api/people/${id}`);
     const data = await response.json();
     return SwapiSchemas.People.parse(data);
@@ -24,7 +24,7 @@ export class SWAPI {
     return SwapiSchemas.PlanetList.parse(data);
   }
 
-  static async getPlanetById(id: string) {
+  static async getPlanetById(id: number) {
     const response = await fetch(`https://swapi.dev/api/planets/${id}`);
     const data = await response.json();
     return SwapiSchemas.Planet.parse(data);
@@ -36,7 +36,7 @@ export class SWAPI {
     return SwapiSchemas.StarshipList.parse(data);
   }
 
-  static async getStarshipById(id: string) {
+  static async getStarshipById(id: number) {
     const response = await fetch(`https://swapi.dev/api/starships/${id}`);
     const data = await response.json();
     return SwapiSchemas.Starship.parse(data);
@@ -48,7 +48,7 @@ export class SWAPI {
     return SwapiSchemas.VehicleList.parse(data);
   }
 
-  static async getVehicleById(id: string) {
+  static async getVehicleById(id: number) {
     const response = await fetch(`https://swapi.dev/api/vehicles/${id}`);
     const data = await response.json();
     return SwapiSchemas.Vehicle.parse(data);
@@ -60,7 +60,7 @@ export class SWAPI {
     return SwapiSchemas.FilmList.parse(data);
   }
 
-  static async getFilmById(id: string) {
+  static async getFilmById(id: number) {
     const response = await fetch(`https://swapi.dev/api/films/${id}`);
     const data = await response.json();
     return SwapiSchemas.Film.parse(data);
@@ -72,7 +72,7 @@ export class SWAPI {
     return SwapiSchemas.SpeciesList.parse(data);
   }
 
-  static async getSpeciesById(id: string) {
+  static async getSpeciesById(id: number) {
     const response = await fetch(`https://swapi.dev/api/species/${id}`);
     const data = await response.json();
     return SwapiSchemas.Species.parse(data);
