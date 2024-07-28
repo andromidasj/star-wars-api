@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { editedEntities } from "@/db/schema";
 import { EntityType, SingleEntitySchemas } from "@/types";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import {
   removeNinePaddedId,
@@ -44,7 +44,12 @@ export async function upsertEntity<
       insertionPromise = db
         .update(editedEntities)
         .set({ updatedData: entityData })
-        .where(eq(editedEntities.id, entityIdToUse!))
+        .where(
+          and(
+            eq(editedEntities.id, entityIdToUse!),
+            eq(editedEntities.entityType, entityType)
+          )
+        )
         .returning({
           id: editedEntities.id,
           entityType: editedEntities.entityType,
