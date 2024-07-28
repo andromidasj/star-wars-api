@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { deletedEntities } from "@/db/schema";
 import { EntityType, SwapiSchemas } from "@/types";
 import { z } from "zod";
-import { entityUrlToId } from "../entityUrlToId";
+import { entityUrlToId } from "../entityIdUtils";
 
 export async function insertDeletedEntity<
   T extends z.infer<typeof SwapiSchemas.ANY_LIST>

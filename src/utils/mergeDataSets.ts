@@ -2,7 +2,7 @@ import { editedEntities } from "@/db/schema";
 import { SwapiSchemas } from "@/types";
 import { InferSelectModel } from "drizzle-orm";
 import { z } from "zod";
-import { updatedEntityIdToNinePaddedId } from "./entityUrlToId";
+import { updatedEntityIdToNinePaddedId } from "./entityIdUtils";
 
 /**
  * This function merges the data from the local database with the data from the SWAPI API.

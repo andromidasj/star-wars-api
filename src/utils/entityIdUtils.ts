@@ -5,3 +5,7 @@ export function entityUrlToId(url: string) {
 export function updatedEntityIdToNinePaddedId(entityId: number) {
   return "999" + entityId;
 }
+
+export function removeNinePaddedId(entityId: number) {
+  return Number(entityId.toString().substring(3));
+}
