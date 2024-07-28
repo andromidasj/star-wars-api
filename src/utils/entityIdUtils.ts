@@ -6,6 +6,6 @@ export function updatedEntityIdToNinePaddedId(entityId: number) {
   return "999" + entityId;
 }
 
-export function removeNinePaddedId(entityId: number) {
+export function removeNinePaddedId(entityId: number | string) {
   return Number(entityId.toString().substring(3));
 }
