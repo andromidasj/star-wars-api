@@ -2,6 +2,7 @@ import { editedEntities } from "@/db/schema";
 import { SwapiSchemas } from "@/types";
 import { InferSelectModel } from "drizzle-orm";
 import { z } from "zod";
+import { updatedEntityIdToNinePaddedId } from "./entityUrlToId";
 
 /**
  * This function merges the data from the local database with the data from the SWAPI API.
@@ -53,11 +54,15 @@ export function mergeDataSets<
   // to the output.
   const localResultsWithoutEntityIdWithUrl = addedEntitiesArr.map((entity) => ({
     ...(entity.updatedData as Object),
+    id: updatedEntityIdToNinePaddedId(entity.id),
     url: "",
     created: entity.created?.toString() ?? Date.now().toString(),
     edited: Date.now().toString(),
   }));
   output.results.push(...localResultsWithoutEntityIdWithUrl);
+
+  // Update the count of the output to include the local results
+  output.count += localResultsWithoutEntityIdWithUrl.length;
 
   return output;
 }

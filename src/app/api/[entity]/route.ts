@@ -22,6 +22,7 @@ export async function GET(request: NextRequest, { params }: DynamicIdParams) {
   const searchParams = request.nextUrl.searchParams;
   const { data: page } = z.coerce.number().safeParse(searchParams.get("page"));
 
+  // Ensure that the entity type from the URL path is valid
   const parsedEntity = EntityTypeEnumSchema.safeParse(params.entity);
   if (!parsedEntity.success) {
     return Response.json(
@@ -58,8 +59,9 @@ export async function POST(request: Request, { params }: DynamicIdParams) {
     species: SWAPI.getSpeciesById,
   } as const;
 
-  const parsedEntity = EntityTypeEnumSchema.safeParse(params.entity);
-  if (!parsedEntity.success) {
+  // Ensure that the entity type from the URL path is valid
+  const parsedEntityType = EntityTypeEnumSchema.safeParse(params.entity);
+  if (!parsedEntityType.success) {
     return Response.json(
       { error: { message: "Invalid path" } },
       { status: 400 }
@@ -67,8 +69,8 @@ export async function POST(request: Request, { params }: DynamicIdParams) {
   }
 
   return upsertEntity({
-    swapiGetFn: entityMap[parsedEntity.data] as () => Promise<any>,
-    entityType: parsedEntity.data,
+    swapiGetFn: entityMap[parsedEntityType.data] as () => Promise<any>,
+    entityType: parsedEntityType.data,
     entityData,
   });
 }

@@ -119,6 +119,14 @@ const vehicleSchema = z.object({
   films: z.array(z.string().url()),
 });
 
+const notFoundSchema = z.object({
+  detail: z.literal("Not found"),
+});
+
+// Function to create a union type with the notFoundSchema
+const withNotFound = <T extends z.ZodTypeAny>(schema: T) =>
+  z.union([schema, notFoundSchema]);
+
 // Schema for list responses
 export const listResponseSchema = <T extends z.ZodTypeAny>(entitySchema: T) =>
   z.object({
@@ -128,30 +136,31 @@ export const listResponseSchema = <T extends z.ZodTypeAny>(entitySchema: T) =>
     results: z.array(entitySchema),
   });
 
-// Export all schemas
+// Export all schemas with the "Not found" possibility (for single entities)
+// or with the list response wrapper (for lists of entities)
 export const SwapiSchemas = {
-  Starship: starshipSchema,
+  Starship: withNotFound(starshipSchema),
   StarshipList: listResponseSchema(starshipSchema),
-  People: peopleSchema,
+  People: withNotFound(peopleSchema),
   PeopleList: listResponseSchema(peopleSchema),
-  Planet: planetSchema,
+  Planet: withNotFound(planetSchema),
   PlanetList: listResponseSchema(planetSchema),
-  Film: filmSchema,
+  Film: withNotFound(filmSchema),
   FilmList: listResponseSchema(filmSchema),
-  Species: speciesSchema,
+  Species: withNotFound(speciesSchema),
   SpeciesList: listResponseSchema(speciesSchema),
-  Vehicle: vehicleSchema,
+  Vehicle: withNotFound(vehicleSchema),
   VehicleList: listResponseSchema(vehicleSchema),
   ANY_LIST: listResponseSchema(z.object(commonFields)),
 };
 
 export const SingleEntitySchemas = [
-  starshipSchema,
-  peopleSchema,
-  planetSchema,
-  filmSchema,
-  speciesSchema,
-  vehicleSchema,
+  SwapiSchemas.Starship,
+  SwapiSchemas.People,
+  SwapiSchemas.Planet,
+  SwapiSchemas.Film,
+  SwapiSchemas.Species,
+  SwapiSchemas.Vehicle,
 ] as const;
 
 export const entityTypesArr = [
