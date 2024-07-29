@@ -33,7 +33,7 @@ To get started:
 
 0. Start the server using the instructions above.
 1. Open your favorite CURL client (I'm currently using HTTPie) and make a `GET` request to `http://localhost:3000/api/people`.
-   - See a list of all the people from the SWAPI API, with Luke Skywalker as the first result.
+   - See a list of all the people from the first page of the SWAPI API, with Luke Skywalker as the first result.
 2. Make a `GET` request to `http://localhost:3000/api/people/1`.
    - See the details of Luke Skywalker from the SWAPI API.
 3. Make a `DELETE` request to `http://localhost:3000/api/people/1/delete`.
@@ -54,8 +54,8 @@ To get started:
      }
      ```
 5. Make another `GET` request to `http://localhost:3000/api/people/`.
-   - You should see Luke Skywalker removed from the response:
-   - Notice that the current response has C-3PO as the first result, with data that includes the following fields:
+   - You should see Luke Skywalker removed from the response!
+   - Also notice that the current response has C-3PO as the first result, with data that includes the following fields:
      ```json
      {
        // ... other fields
@@ -75,12 +75,13 @@ To get started:
    ```json
    {
      "name": "Josh Andromidas",
-     "hair_color": "purple"
+     "hair_type": "curly, poofy",
+     "hired": true
    }
    ```
-   - The response should show the entity type that was modified, the local entity ID (which is a number string starting with "999"), and the data that was added to the local database.
+   - The response should show the entity type that was modified, the local entity ID (which is a number starting with "999"), and the data that was added to the local database.
 8. Make another `GET` request to `http://localhost:3000/api/people`.
-   - You should see the new entity added to the bottom of the list
+   - You should see the new entity added to the bottom of the list!
 
 ## API
 
@@ -96,6 +97,9 @@ This API is written in Typescript using NextJS and DrizzleORM connected to a Pos
 
 - **Modifiying deletions**
   Curently, there's no support for modifying the `deleted_entities` table. If you delete an entity and want it back, it can be added manually with a POST request. I could improve this by adding another endpoint which would allow you to "undelete" an entity.
+
+- **Date formatting & updating**
+  The API doesn't currently format dates in a way that's consistent with the SWAPI API, since I'm just using a Date.toString() method. This could easily be fixed by going in and making sure that the date types are consistent, I just didn't want to do that for now.
 
 ### Routes
 
