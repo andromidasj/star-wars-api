@@ -10,7 +10,8 @@ To get started:
    ```bash
    git clone https://github.com/andromidasj/star-wars-api.git
    ```
-2. Rename the .env.example file to `.env`, (or create a new `.env` file) with the appropriate environment variables:
+2. Spin up a local or remote Postgres database, and get the connection details from your database. Make sure that the database is running and empty, as the API will create the tables if they don't exist.
+3. Rename the `.env.example` file to `.env`, (or create a new `.env` file) with the appropriate environment variables, like so:
    ```bash
    DB_HOST=localhost
    DB_PORT=5432
@@ -18,14 +19,68 @@ To get started:
    # DB_USER=postgres     # only if you have auth enabled in the db
    # DB_PASSWORD=postgres # only if you have auth enabled in the db
    ```
-3. Install the dependencies. In my case, I'm using `bun`:
+4. Install the dependencies. In my case, I'm using `bun`:
    ```bash
    bun i
    ```
-4. Start the server:
+5. Start the server:
    ```bash
-   bun run start
+   bun run build:start
    ```
+   (This will run the db migrations, build the app, and start the server. See `package.json` for more details.)
+
+## Guided Tour Demo
+
+0. Start the server using the instructions above.
+1. Open your favorite CURL client (I'm currently using HTTPie) and make a `GET` request to `http://localhost:3000/api/people`.
+   - See a list of all the people from the SWAPI API, with Luke Skywalker as the first result.
+2. Make a `GET` request to `http://localhost:3000/api/people/1`.
+   - See the details of Luke Skywalker from the SWAPI API.
+3. Make a `DELETE` request to `http://localhost:3000/api/people/1/delete`.
+   - Delete Luke Skywalker from the local database.
+   - You should see the response:
+     ```json
+     {
+       "message": "Entity with ID 1 has been deleted."
+     }
+     ```
+4. Make a `GET` request to `http://localhost:3000/api/people/1`.
+   - You should see the response:
+     ```json
+     {
+       "error": {
+         "message": "Couldn't find any people with ID 1"
+       }
+     }
+     ```
+5. Make another `GET` request to `http://localhost:3000/api/people/`.
+   - You should see Luke Skywalker removed from the response:
+   - Notice that the current response has C-3PO as the first result, with data that includes the following fields:
+     ```json
+     {
+       // ... other fields
+       "url": "https://swapi.dev/api/people/2/",
+       "name": "C-3PO"
+       // ... other fields
+     }
+     ```
+6. With C-3PO having an ID of 2 (that we see from the url field), make a `PUT` request to `http://localhost:3000/api/people/2` with the following request body:
+   ```json
+   {
+     "name": "Russ-3PO"
+   }
+   ```
+   - Notice that the response has all of the fields like before, but now the name field has been updated to "Russ-3PO".
+7. Make a `POST` request to `http://localhost:3000/api/people` with the following request body:
+   ```json
+   {
+     "name": "Josh Andromidas",
+     "hair_color": "purple"
+   }
+   ```
+   - The response should show the entity type that was modified, the local entity ID (which is a number string starting with "999"), and the data that was added to the local database.
+8. Make another `GET` request to `http://localhost:3000/api/people`.
+   - You should see the new entity added to the bottom of the list
 
 ## API
 
@@ -71,18 +126,18 @@ To create a new entity, you can use the POST method. The request body should be 
 
 // Request body:
 {
-  "name": "josh andromidas",
-  "hair_color": "purple"
+"name": "josh andromidas",
+"hair_color": "purple"
 }
 
 // Response:
 {
-  "id": 20,
-  "entityType": "people",
-  "data": {
-    "name": "josh andromidas",
-    "hair_color": "purple"
-  }
+"id": 20,
+"entityType": "people",
+"data": {
+  "name": "josh andromidas",
+  "hair_color": "purple"
+}
 }
 ```
 
