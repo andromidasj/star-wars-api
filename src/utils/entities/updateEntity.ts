@@ -22,7 +22,6 @@ export async function updateEntity<
   entityType: EntityType;
   entityData: Partial<T>;
 }) {
-  console.log("🚀 ~ entityId:", entityId);
   try {
     const isEntityIdLocal = !!(
       entityId && entityId.toString().startsWith("999")
