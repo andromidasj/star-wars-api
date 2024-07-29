@@ -98,8 +98,11 @@ This API is written in Typescript using NextJS and DrizzleORM connected to a Pos
 - **Modifiying deletions**
   Curently, there's no support for modifying the `deleted_entities` table. If you delete an entity and want it back, it can be added manually with a POST request. I could improve this by adding another endpoint which would allow you to "undelete" an entity.
 
-- **Date formatting & updating**
-  The API doesn't currently format dates in a way that's consistent with the SWAPI API, since I'm just using a Date.toString() method. This could easily be fixed by going in and making sure that the date types are consistent, I just didn't want to do that for now.
+- **Date formatting**
+  The API doesn't currently format dates in a way that's consistent with the SWAPI API, since I'm just using a new Date() object. This could easily be fixed by going in and making sure that the date types are consistent, I just didn't want to do that for now.
+
+- **Testing**
+  I haven't written any tests yet, but that's something I'd definitely do if I were to continue working on this project.
 
 ### Routes
 
@@ -130,18 +133,18 @@ To create a new entity, you can use the POST method. The request body should be 
 
 // Request body:
 {
-"name": "josh andromidas",
-"hair_color": "purple"
+  "name": "josh andromidas",
+  "hair_color": "purple"
 }
 
 // Response:
 {
-"id": 20,
-"entityType": "people",
-"data": {
-  "name": "josh andromidas",
-  "hair_color": "purple"
-}
+  "id": 20,
+  "entityType": "people",
+  "data": {
+    "name": "josh andromidas",
+    "hair_color": "purple"
+  }
 }
 ```
 
@@ -209,5 +212,3 @@ For example:
   "message": "Entity with ID 20 has been deleted."
 }
 ```
-
-TODO: don't return deleted entity by id in GET responses
