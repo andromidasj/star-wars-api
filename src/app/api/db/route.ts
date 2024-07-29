@@ -6,6 +6,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const type = searchParams.get("type");
 
+  // Extra route to check the locally stored entities
   try {
     switch (type) {
       case "edited":
