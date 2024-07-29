@@ -85,7 +85,11 @@ To get started:
 
 ## API
 
-This API is written in Typescript using NextJS and DrizzleORM connected to a Postgres database. I chose NextJS because of its easy file-based routing, and I'm familiar with it. I've been hearing amazing things about DrizzleORM, so I decided to give it a try as well.
+### Tools
+
+This API is written in Typescript using NextJS and DrizzleORM connected to a Postgres database. I chose NextJS because of its easy file-based routing, and I'm familiar with it. It's more of a full-stack framework, so if I were creating ONLY an API for a deployed project, I would probably use Express, Hono, or some other JS API framework.
+
+I've been hearing amazing things about DrizzleORM, so I decided to give it a try as well to get connected to the database and make it easier to work with schemas and queries.
 
 ### Limitations
 
