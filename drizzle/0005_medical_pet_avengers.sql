@@ -1,0 +1,1 @@
+ALTER TABLE "edited_entities" DROP CONSTRAINT "edited_entities_entity_id_unique";

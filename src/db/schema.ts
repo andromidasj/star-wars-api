@@ -13,7 +13,7 @@ export const entitiesEnum = pgEnum("entity_type", entityTypesArr);
 export const editedEntities = pgTable("edited_entities", {
   id: serial("id").primaryKey(),
   entityType: entitiesEnum("entity_type").notNull(),
-  entityId: integer("entity_id").unique(),
+  entityId: integer("entity_id"),
   updatedData: jsonb("updated_data").notNull(),
   created: timestamp("created").defaultNow(),
   edited: timestamp("edited").defaultNow(),

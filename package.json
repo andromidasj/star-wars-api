@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:start": "drizzle-kit migrate && next build && next start",
     "start": "drizzle-kit migrate && next start",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",

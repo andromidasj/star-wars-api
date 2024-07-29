@@ -1,6 +1,6 @@
 import { DynamicIdParams, EntityTypeEnumSchema } from "@/types";
 import { getEntity } from "@/utils/entities/getEntity";
-import { upsertEntity } from "@/utils/entities/upsertEntity";
+import { updateEntity } from "@/utils/entities/updateEntity";
 import { SWAPI } from "@/utils/SWAPI";
 
 export async function GET(_request: Request, { params }: DynamicIdParams) {
@@ -58,7 +58,7 @@ export async function PUT(request: Request, { params }: DynamicIdParams) {
     );
   }
 
-  return upsertEntity({
+  return updateEntity({
     swapiGetFn: entityMap[parsedEntity.data] as (id?: number) => Promise<any>,
     entityType: parsedEntity.data,
     entityId: +params.id,

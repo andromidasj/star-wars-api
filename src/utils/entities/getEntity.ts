@@ -52,8 +52,13 @@ export async function getEntity<
       promiseArray
     );
 
+    const entityNotFoundInSwapiResponse =
+      swapiResponse &&
+      "detail" in swapiResponse &&
+      swapiResponse.detail === "Not found";
+
     // Filter out deleted entities from the SWAPI API response
-    if (deletedResult) {
+    if (deletedResult || entityNotFoundInSwapiResponse) {
       return Response.json(
         {
           error: {
