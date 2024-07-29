@@ -90,7 +90,7 @@ export async function updateEntity<
     // and return the updated data.
     const updateResult = await db
       .update(editedEntities)
-      .set({ updatedData: entityData })
+      .set({ updatedData: entityData, edited: new Date() })
       .where(
         and(
           eq(editedEntities.entityType, entityType),

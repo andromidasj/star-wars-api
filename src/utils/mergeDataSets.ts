@@ -16,16 +16,10 @@ export function mergeDataSets<
 >({ localResults, swapiResponse }: { localResults: T[]; swapiResponse: U }) {
   const output = structuredClone(swapiResponse);
 
-  const addedEntitiesArr = [];
-
   // Create a set of entity IDs from the local database
   const customEntityIdSet = new Set();
   for (const entity of localResults) {
-    if (entity.entityId) {
-      customEntityIdSet.add(entity.entityId);
-    } else {
-      addedEntitiesArr.push(entity);
-    }
+    customEntityIdSet.add(entity.entityId);
   }
 
   // Iterate through the results from the SWAPI API and merge the data from the local database
@@ -50,15 +44,16 @@ export function mergeDataSets<
     }
   });
 
-  // Append the results from the local database that don't have an entity ID in the SWAPI API
-  // to the output.
-  const localResultsWithoutEntityIdWithUrl = addedEntitiesArr.map((entity) => ({
-    ...(entity.updatedData as Object),
-    id: updatedEntityIdToNinePaddedId(entity.id),
-    url: "",
-    created: entity.created?.toString() ?? Date.now().toString(),
-    edited: Date.now().toString(),
-  }));
+  // Append the results from the local database that have a 9-padded entity ID to the output.
+  const localResultsWithoutEntityIdWithUrl = localResults
+    .filter((res) => res.entityId?.toString().startsWith("999"))
+    .map((entity) => ({
+      ...(entity.updatedData as Object),
+      id: updatedEntityIdToNinePaddedId(entity.id),
+      url: "",
+      created: entity.created?.toString() ?? Date.now().toString(),
+      edited: entity.edited?.toString() ?? Date.now().toString(),
+    }));
   output.results.push(...localResultsWithoutEntityIdWithUrl);
 
   // Update the count of the output to include the local results
